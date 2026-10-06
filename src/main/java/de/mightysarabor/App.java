@@ -1,6 +1,8 @@
 package de.mightysarabor;
 
 import de.mightysarabor.api_utility.API_Client;
+import de.mightysarabor.parser.JSONParser;
+import de.mightysarabor.records.User;
 
 import java.io.IOException;
 
@@ -10,9 +12,15 @@ import java.io.IOException;
  */
 public class App 
 {
+
     public static void main( String[] args ) throws IOException, InterruptedException {
-        System.out.println( "Hello World!" );
         API_Client client = new API_Client();
-        client.makeRequest("https://jsonplaceholder.typicode.com/users/1");
+        JSONParser parser = new JSONParser();
+
+        String response = client.get(
+                "https://opensky-network.org/api/states/all"
+        );
+
+        System.out.println(parser.parseToTree(response).toPrettyString());
     }
 }
