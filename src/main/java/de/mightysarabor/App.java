@@ -2,6 +2,7 @@ package de.mightysarabor;
 
 import de.mightysarabor.api_utility.API_Client;
 import de.mightysarabor.parser.JSONParser;
+import de.mightysarabor.records.CreatePostRequest;
 import de.mightysarabor.records.User;
 
 import java.io.IOException;
@@ -21,6 +22,18 @@ public class App
                 "https://opensky-network.org/api/states/all"
         );
 
-        System.out.println(parser.parseToTree(response).toPrettyString());
+        //System.out.println(parser.parseToTree(response).toPrettyString());
+
+        CreatePostRequest request =
+                new CreatePostRequest(
+                        "Java HTTP Client",
+                        "Sending objects instead of manually building JSON",
+                        1
+                );
+
+        String json = parser.writeValueAsString(request);
+
+        System.out.println(client.post("https://jsonplaceholder.typicode.com/posts", json));
+
     }
 }
