@@ -1,15 +1,12 @@
 package de.mightysarabor.api_utility;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.mightysarabor.records.CreatePostRequest;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.Map;
 
 public class API_Client {
 
@@ -25,7 +22,7 @@ public class API_Client {
 
     }
 
-    private HttpResponse getResponse(HttpRequest request ) throws IOException, InterruptedException {
+    private HttpResponse<String> getResponse(HttpRequest request ) throws IOException, InterruptedException {
 
         HttpResponse<String> response = client.send(
                 request,
@@ -45,25 +42,28 @@ public class API_Client {
     }
 
     public String get(
-            String url
+            String url, Map<String, String> headers
     ) throws IOException, InterruptedException {
 
+
+        Map.Entry<String, String> entry = headers.entrySet().iterator().next();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(20))
-                .header("Accept", "application/json")
+                .header(entry.getKey(), entry.getValue())
                 .GET()
                 .build();
 
 
         HttpResponse<String> response = getResponse(request);
 
-        return response.body();
+        return response.headers().toString();
     }
 
     public String post(
             String url,
-            String json
+            String json,
+            String headerValue
     ) throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -75,7 +75,7 @@ public class API_Client {
                 )
                 .header(
                         "Content-Type",
-                        "application/json"
+                        headerValue
                 )
                 .POST(
                         HttpRequest.BodyPublishers.ofString(json)
