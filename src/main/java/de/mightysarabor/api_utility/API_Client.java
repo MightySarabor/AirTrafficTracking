@@ -1,12 +1,14 @@
 package de.mightysarabor.api_utility;
 
+import de.mightysarabor.records.HeaderRecord;
+import de.mightysarabor.records.ResponseRecord;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.Map;
 
 public class API_Client {
 
@@ -41,26 +43,24 @@ public class API_Client {
         );
     }
 
-    public String get(
-            String url, Map<String, String> headers
+    public ResponseRecord get(
+            String url, HeaderRecord header
     ) throws IOException, InterruptedException {
 
 
-        Map.Entry<String, String> entry = headers.entrySet().iterator().next();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(20))
-                .header(entry.getKey(), entry.getValue())
+                .header(header.name(), header.value())
                 .GET()
                 .build();
 
 
         HttpResponse<String> response = getResponse(request);
-
-        return response.headers().toString();
+        return new ResponseRecord(response.headers().toString(), response.body());
     }
 
-    public String post(
+    public ResponseRecord post(
             String url,
             String json,
             String headerValue
@@ -83,6 +83,6 @@ public class API_Client {
                 .build();
 
         HttpResponse<String> response = getResponse(request);
-        return response.body();
+        return new ResponseRecord(response.headers().toString(), response.body());
     }
 }
