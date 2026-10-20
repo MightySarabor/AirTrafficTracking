@@ -11,16 +11,17 @@ public class OpenSkyAPIService {
 
     private API_Client client;
 
-    public OpenSkyAPIService(String header, API_Client Client, String url, String body, JSONParser parser) {
-        this.client = Client;
+    public OpenSkyAPIService(HeaderRecord header, API_Client client) {
+        this.client = client;
     }
 
 
-    public void getFlightInfo(String accessToken) throws IOException, InterruptedException {
+    public String getFlightInfo(String accessToken, String url) throws IOException, InterruptedException {
 
             HeaderRecord getHeader = new HeaderRecord("Authorization", "Bearer " + accessToken);
-            ResponseRecord getResponse = client.get("https://opensky-network.org/api/states/all?_limit=1", getHeader);
-            System.out.println(getResponse.responseBody().substring(0, Math.min(20, getResponse.responseBody().length())));
+            ResponseRecord getResponse = client.get(url, getHeader);
+            System.out.println(getResponse.responseBody());
+            return getResponse.responseBody();
         }
 
 }
