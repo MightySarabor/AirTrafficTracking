@@ -10,8 +10,10 @@ import de.mightysarabor.records.CreatePostRequest;
 import de.mightysarabor.records.HeaderRecord;
 import de.mightysarabor.records.PracticeRecord;
 import de.mightysarabor.records.ResponseRecord;
+import de.mightysarabor.util.Config;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -26,8 +28,10 @@ public class App
         ObjectMapper mapper = new ObjectMapper();
         String getTokenUrl = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
         String getFlightInfoURL = "https://opensky-network.org/api/states/all?lamin=45.8389&lomin=5.9962&lamax=47.8229&lomax=10.5226";
-        String body = "grant_type=client_credentials&client_id=mightysarabor-api-client&client_secret=uwbSEMZFpuNqat9hankSUPJC2R5VKwwN";
-        AccessTokenService accessTokenService = new AccessTokenService("application/x-www-form-urlencoded", client, getTokenUrl, body, parser );
+        String clientID = Config.getSecret("CLIENT_ID");
+        String clientSecret = Config.getSecret("CLIENT_SECRET");
+        String clientURL = "grant_type=client_credentials&client_id=" +clientID +"&client_secret=" + clientSecret;
+        AccessTokenService accessTokenService = new AccessTokenService("application/x-www-form-urlencoded", client, getTokenUrl, clientURL, parser );
         HeaderRecord header = accessTokenService.getAuthorizationHeader();
         OpenSkyAPIService openSkyAPIService = new OpenSkyAPIService(header, client);
 
@@ -35,6 +39,7 @@ public class App
         String token = header.value();
 
         System.out.println("Token: " + token);
+
 
         while (true) {
             remaining = accessTokenService.getRemainingTime(token);
