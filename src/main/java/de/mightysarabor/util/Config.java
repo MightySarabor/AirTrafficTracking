@@ -11,7 +11,6 @@ public class Config {
         // Load the file from the project root
         try (FileInputStream fis = new FileInputStream("/home/sarabor/dev/AirTrafficTracking/src/main/java/de/mightysarabor/resources/.env")) {
             properties.load(fis);
-            System.out.println("Properties: BINGBINGBING");
         } catch (IOException e) {
             System.err.println("Warning: .env not found. Falling back to system environment.");
         }

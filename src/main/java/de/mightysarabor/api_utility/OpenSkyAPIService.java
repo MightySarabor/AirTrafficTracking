@@ -1,6 +1,5 @@
 package de.mightysarabor.api_utility;
 
-import de.mightysarabor.parser.JSONParser;
 import de.mightysarabor.records.HeaderRecord;
 import de.mightysarabor.records.ResponseRecord;
 
@@ -9,18 +8,19 @@ import java.io.IOException;
 
 public class OpenSkyAPIService {
 
-    private API_Client client;
+    private APIClient client;
+    private HeaderRecord header;
 
-    public OpenSkyAPIService(HeaderRecord header, API_Client client) {
+    public OpenSkyAPIService(HeaderRecord header, APIClient client) {
         this.client = client;
+        this.header = header;
     }
 
 
     public String getFlightInfo(String accessToken, String url) throws IOException, InterruptedException {
 
-            HeaderRecord getHeader = new HeaderRecord("Authorization", "Bearer " + accessToken);
-            ResponseRecord getResponse = client.get(url, getHeader);
-            System.out.println(getResponse.responseBody());
+            ResponseRecord getResponse = client.get(url, header);
+            //System.out.println(getResponse.responseBody());
             return getResponse.responseBody();
         }
 

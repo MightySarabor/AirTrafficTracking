@@ -1,6 +1,6 @@
 package de.mightysarabor.records;
 
-public record Flight_Info(
+public record FlightInfo(
         String callSign,
         String originCountry,
         float velocity

@@ -15,13 +15,13 @@ import java.util.Base64;
 
 public class AccessTokenService {
 
-    private API_Client client;
-    private String header;
-    private String body;
-    private String url;
-    private JSONParser parser;
+    private final APIClient client;
+    private final String header;
+    private final String body;
+    private final String url;
+    private final JSONParser parser;
 
-    public AccessTokenService(String header, API_Client Client, String url, String body, JSONParser parser) {
+    public AccessTokenService(String header, APIClient Client, String url, String body, JSONParser parser) {
         this.header = header;
         this.client = Client;
         this.body = body;
@@ -46,8 +46,7 @@ public class AccessTokenService {
     public long getRemainingTime(String accessToken) throws JsonProcessingException {
         long now = Instant.now().getEpochSecond();
         String expiresAt = parser.parseToTree(decodeJwtPart(accessToken, 1)).get("exp").asText();
-        long remaining = Long.parseLong(expiresAt) - now;
-        return remaining;
+        return Long.parseLong(expiresAt) - now;
     }
 
     public String decodeJwtPart(String jwt, int part) {

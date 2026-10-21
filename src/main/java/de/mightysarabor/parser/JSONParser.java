@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.mightysarabor.records.CreatePostRequest;
-import de.mightysarabor.records.Flight_Info;
 
 public class JSONParser {
     private final ObjectMapper mapper;

@@ -10,12 +10,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-public class API_Client {
+public class APIClient {
 
 
     private final HttpClient client;
 
-    public API_Client() {
+    public APIClient() {
 
         client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))
